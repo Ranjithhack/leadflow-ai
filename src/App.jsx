@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./App.css";
 
+const WEBHOOK_URL =
+  "https://nomination-environment-pushing-pensions.trycloudflare.com/webhook/leadflow";
+
 function App() {
   const [formData, setFormData] = useState({
     name: "",
@@ -13,36 +16,35 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((previousData) => ({
+      ...previousData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
     setStatus("");
 
     try {
-      const response = await fetch(
-        "https://nomination-environment-pushing-pensions.trycloudflare.com/webhook/leadflow",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to submit enquiry");
+        throw new Error(`HTTP error: ${response.status}`);
       }
 
-      setStatus(
-        "success"
-      );
+      setStatus("success");
+
       setFormData({
         name: "",
         email: "",
@@ -50,10 +52,8 @@ function App() {
         message: "",
       });
     } catch (error) {
-      console.error("Submission error:", error);
-      setStatus(
-        "error"
-      );
+      console.error("Lead submission error:", error);
+      setStatus("error");
     } finally {
       setLoading(false);
     }
@@ -61,24 +61,24 @@ function App() {
 
   return (
     <div className="app">
-
-      {/* NAVBAR */}
+      {/* ================= NAVBAR ================= */}
       <nav className="navbar">
-        <div className="logo">⚡ LeadFlow AI</div>
+        <div className="logo">
+          <span className="logo-icon">⚡</span>
+          LeadFlow AI
+        </div>
 
         <a href="#contact" className="nav-button">
           Get Started
         </a>
       </nav>
 
-
-      {/* HERO */}
+      {/* ================= HERO ================= */}
       <section className="hero">
-
         <div className="hero-content">
-
           <div className="badge">
-            🤖 AI-Powered Lead Management
+            <span>🤖</span>
+            AI-Powered Lead Management
           </div>
 
           <h1>
@@ -93,127 +93,69 @@ function App() {
           </p>
 
           <div className="hero-buttons">
-
-            <a
-              href="#contact"
-              className="primary-button"
-            >
+            <a href="#contact" className="primary-button">
               Get Started →
             </a>
 
-            <a
-              href="#how-it-works"
-              className="secondary-button"
-            >
+            <a href="#how-it-works" className="secondary-button">
               See How It Works
             </a>
-
           </div>
-
         </div>
 
-
-        {/* AI CARD */}
+        {/* AI ANALYSIS CARD */}
         <div className="hero-card">
-
           <div className="card-header">
-
-            <span>
-              Live Lead Analysis
-            </span>
+            <span>Live Lead Analysis</span>
 
             <span className="status">
-              ● Active
+              <span className="status-dot">●</span>
+              Active
             </span>
-
           </div>
-
 
           <div className="lead-card">
-
-            <div className="lead-icon">
-              👤
-            </div>
+            <div className="lead-icon">👤</div>
 
             <div>
-
-              <h3>
-                New Customer Enquiry
-              </h3>
-
-              <p>
-                Interested in your services
-              </p>
-
+              <h3>New Customer Enquiry</h3>
+              <p>Interested in your services</p>
             </div>
-
           </div>
-
 
           <div className="analysis">
-
             <div>
-
-              <span>
-                Lead Status
-              </span>
-
-              <strong>
-                Interested
-              </strong>
-
+              <span>Lead Status</span>
+              <strong>Interested</strong>
             </div>
 
-
             <div>
-
-              <span>
-                Priority
-              </span>
-
-              <strong className="high">
-                High
-              </strong>
-
+              <span>Priority</span>
+              <strong className="high">High</strong>
             </div>
 
-
             <div>
-
-              <span>
-                Intent
-              </span>
-
-              <strong>
-                Service Inquiry
-              </strong>
-
+              <span>Intent</span>
+              <strong>Service Inquiry</strong>
             </div>
-
           </div>
-
 
           <div className="ai-message">
-
-            🧠 AI Recommendation
+            <div className="ai-title">
+              🧠 AI Recommendation
+            </div>
 
             <p>
-              Follow up with the customer and provide
-              detailed service information.
+              Follow up with the customer and provide detailed
+              service information.
             </p>
-
           </div>
-
         </div>
-
       </section>
 
-
-      {/* FEATURES */}
+      {/* ================= FEATURES ================= */}
       <section className="features">
-
         <div className="section-heading">
-
           <span className="small-label">
             POWERFUL AUTOMATION
           </span>
@@ -223,82 +165,50 @@ function App() {
           </h2>
 
           <p>
-            Stop manually sorting enquiries.
-            Let AI qualify your leads automatically.
+            Stop manually sorting enquiries. Let AI qualify your
+            leads automatically.
           </p>
-
         </div>
-
 
         <div className="feature-grid">
-
           <div className="feature-card">
+            <div className="feature-icon">🤖</div>
 
-            <div className="feature-icon">
-              🤖
-            </div>
-
-            <h3>
-              AI Lead Qualification
-            </h3>
+            <h3>AI Lead Qualification</h3>
 
             <p>
-              Automatically analyse every enquiry and
-              determine lead status, priority,
-              and customer intent.
+              Automatically analyse every enquiry and determine
+              lead status, priority, and customer intent.
             </p>
-
           </div>
-
 
           <div className="feature-card">
+            <div className="feature-icon">📊</div>
 
-            <div className="feature-icon">
-              📊
-            </div>
-
-            <h3>
-              Centralised CRM
-            </h3>
+            <h3>Centralised CRM</h3>
 
             <p>
-              Keep all your leads organised with automatic
-              CRM updates and structured customer information.
+              Keep all your leads organised with automatic CRM
+              updates and structured customer information.
             </p>
-
           </div>
-
 
           <div className="feature-card">
+            <div className="feature-icon">📧</div>
 
-            <div className="feature-icon">
-              📧
-            </div>
-
-            <h3>
-              Instant Notifications
-            </h3>
+            <h3>Instant Notifications</h3>
 
             <p>
-              Get immediate email alerts when a new lead
-              arrives so your team can respond faster.
+              Get immediate email alerts when a new lead arrives
+              so your team can respond faster.
             </p>
-
           </div>
-
         </div>
-
       </section>
 
-
-      {/* WORKFLOW */}
-      <section
-        id="how-it-works"
-        className="workflow"
-      >
-
+      {/* ================= WORKFLOW ================= */}
+      <section id="how-it-works" className="workflow">
         <div className="section-heading">
-
           <span className="small-label">
             HOW IT WORKS
           </span>
@@ -306,96 +216,54 @@ function App() {
           <h2>
             From Enquiry to Action Automatically
           </h2>
-
         </div>
-
 
         <div className="steps">
-
           <div className="step">
+            <div className="step-number">01</div>
 
-            <div className="step-number">
-              01
-            </div>
-
-            <h3>
-              Customer Enquiry
-            </h3>
+            <h3>Customer Enquiry</h3>
 
             <p>
-              A customer submits an enquiry
-              through your website.
+              A customer submits an enquiry through your website.
             </p>
-
           </div>
-
 
           <div className="step">
+            <div className="step-number">02</div>
 
-            <div className="step-number">
-              02
-            </div>
-
-            <h3>
-              AI Analysis
-            </h3>
+            <h3>AI Analysis</h3>
 
             <p>
-              AI analyses the enquiry and
-              identifies its potential.
+              AI analyses the enquiry and identifies its potential.
             </p>
-
           </div>
-
 
           <div className="step">
+            <div className="step-number">03</div>
 
-            <div className="step-number">
-              03
-            </div>
-
-            <h3>
-              CRM Update
-            </h3>
+            <h3>CRM Update</h3>
 
             <p>
-              The lead is automatically
-              stored in your CRM.
+              The lead is automatically stored in your CRM.
             </p>
-
           </div>
-
 
           <div className="step">
+            <div className="step-number">04</div>
 
-            <div className="step-number">
-              04
-            </div>
-
-            <h3>
-              Instant Alert
-            </h3>
+            <h3>Instant Alert</h3>
 
             <p>
-              Your team receives an
-              immediate notification.
+              Your team receives an immediate notification.
             </p>
-
           </div>
-
         </div>
-
       </section>
 
-
-      {/* CONTACT FORM */}
-      <section
-        id="contact"
-        className="contact"
-      >
-
+      {/* ================= CONTACT ================= */}
+      <section id="contact" className="contact">
         <div className="contact-content">
-
           <span className="small-label">
             GET STARTED
           </span>
@@ -405,19 +273,15 @@ function App() {
           </h2>
 
           <p>
-            Submit your details and experience how
-            LeadFlow AI can transform your customer
-            enquiry process.
+            Submit your details and experience how LeadFlow AI
+            can transform your customer enquiry process.
           </p>
-
         </div>
-
 
         <form
           className="contact-form"
           onSubmit={handleSubmit}
         >
-
           <input
             type="text"
             name="name"
@@ -426,7 +290,6 @@ function App() {
             placeholder="Your Name"
             required
           />
-
 
           <input
             type="email"
@@ -437,7 +300,6 @@ function App() {
             required
           />
 
-
           <input
             type="tel"
             name="phone"
@@ -446,7 +308,6 @@ function App() {
             placeholder="Phone Number"
             required
           />
-
 
           <textarea
             name="message"
@@ -457,59 +318,48 @@ function App() {
             required
           />
 
-
           <button
             type="submit"
             disabled={loading}
           >
-
             {loading
               ? "Submitting..."
               : "Submit Enquiry →"}
-
           </button>
-
 
           {status === "success" && (
             <div className="success-message">
               ✅ Your enquiry has been submitted successfully!
+              <br />
               Our team will contact you soon.
             </div>
           )}
 
-
           {status === "error" && (
             <div className="error-message">
               ❌ Unable to submit your enquiry.
-              Please make sure the n8n workflow is waiting
-              for a test webhook and try again.
+              <br />
+              Please try again later.
             </div>
           )}
-
         </form>
-
       </section>
 
-
-      {/* FOOTER */}
+      {/* ================= FOOTER ================= */}
       <footer>
-
         <div className="logo">
-          ⚡ LeadFlow AI
+          <span className="logo-icon">⚡</span>
+          LeadFlow AI
         </div>
 
         <p>
-          AI-powered lead qualification and
-          business automation.
+          AI-powered lead qualification and business automation.
         </p>
 
         <span>
-          © 2026 LeadFlow AI.
-          All rights reserved.
+          © 2026 LeadFlow AI. All rights reserved.
         </span>
-
       </footer>
-
     </div>
   );
 }
