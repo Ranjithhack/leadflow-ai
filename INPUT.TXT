@@ -1,0 +1,12 @@
+$body = @{
+    name = "Rahul Kumar"
+    email = "your-email@example.com"
+    phone = "9999999999"
+    message = "I need a website for my business. I would like to know more about your services."
+} | ConvertTo-Json
+
+Invoke-RestMethod `
+    -Uri "http://localhost:5678/webhook-test/7d9a991a-1bdd-4539-ab73-0ff95a68e3f3" `
+    -Method POST `
+    -ContentType "application/json" `
+    -Body $body
