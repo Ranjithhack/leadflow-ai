@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 const WEBHOOK_URL =
-  " https://metallic-viewing-wayne-adapters.trycloudflare.com/webhook/7d9a991a-1bdd-4539-ab73-0ff95a68e3f3";
+  "https://reveals-cnet-prominent-serum.trycloudflare.com/7d9a991a-1bdd-4539-ab73-0ff95a68e3f3";
 function App() {
   const [formData, setFormData] = useState({
     name: "",
